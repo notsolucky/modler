@@ -228,17 +228,19 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
     }
 
     /**
-     * Slice and return certain items in the set
+     * Get a new collection with the data sliced to certain items in the set
      *     If no # of items is specificed, the rest of the data is returned
      *
      * @param integer $start Start index
      * @param integer $items Number of items to return
-     * @return array Sliced set of data
+     * @return \Modeler\Collection Collection instance
      */
     public function slice($start, $items = null)
     {
         $end = ($items !== null) ? $items : count($this->data)-1;
-        return array_slice($this->data, $start, $end);
+        $data = array_slice($this->data, $start, $end);
+        $collection = new Collection($data);
+        return $collection;
     }
 
     /**
@@ -265,9 +267,7 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
      */
     public function take($limit)
     {
-        $data = $this->slice(0, $limit);
-        $collection = new Collection($data);
-        return $collection;
+        return $this->slice(0, $limit);
     }
 
     /**
